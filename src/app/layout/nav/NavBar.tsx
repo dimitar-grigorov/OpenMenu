@@ -1,20 +1,16 @@
-import { Button, Container, Menu, MenuItem } from "semantic-ui-react";
+import { NavLink } from 'react-router-dom';
+import { Container, Menu, MenuItem } from 'semantic-ui-react';
 
 export default function NavBar() {
     return (
-        <Menu inverted={true} fixed='top' >
+        <Menu inverted={true} fixed='top'>
             <Container>
-                <MenuItem header>
+                <MenuItem header as={NavLink} to='/'>
                     <img src="/logo.png" alt="logo" />
+                    Open Menu
                 </MenuItem>
-                <MenuItem name='Events' />
-                <MenuItem>
-                    <Button floated="right" positive={true} inverted content="Create Event" />
-                </MenuItem>
-                <MenuItem position='right'>
-                    <Button basic={true} inverted content="Login" />
-                    <Button basic={true} inverted content="Register" style={{ marginLeft: '0.5em' }} />
-                </MenuItem>
+                <MenuItem name='Menu' as={NavLink} to='/menu' />
+                <MenuItem name='Lab' as={NavLink} to='/lab' />
             </Container>
         </Menu>
     )
