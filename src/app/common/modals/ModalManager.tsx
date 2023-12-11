@@ -1,9 +1,11 @@
+import LoginForm from '../../../features/auth/LoginForm';
 import TestModal from '../../../features/lab/TestModal';
 import { useAppSelector } from '../../store/store'
 
 export default function ModalManager() {
     const modalLookup = {
         TestModal,
+        LoginForm
     }
 
     const { type, data, open } = useAppSelector(state => state.modals);
