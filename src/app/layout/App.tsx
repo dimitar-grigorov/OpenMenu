@@ -1,6 +1,6 @@
 import { Container } from "semantic-ui-react"
-import Dashboard from "../../features/events/dashboard/Dashboard"
 import NavBar from "./nav/NavBar"
+import { Outlet } from "react-router-dom"
 
 function App() {
 
@@ -8,7 +8,7 @@ function App() {
     <>
       <NavBar />
       <Container className="main">
-        <Dashboard />
+        <Outlet />
       </Container>
     </>
   )

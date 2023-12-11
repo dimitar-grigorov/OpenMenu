@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from '../layout/App';
+import Lab from '../../features/lab/Lab';
 
 export const router = createBrowserRouter([
     {
@@ -8,6 +9,7 @@ export const router = createBrowserRouter([
         children: [
             //{ path: '/menu', element: <MenuDashboard /> },
             //{ path: '/menu/:id', element: <MenuItem /> },
+            { path: '/lab', element: <Lab /> },
         ]
     }
 ])
