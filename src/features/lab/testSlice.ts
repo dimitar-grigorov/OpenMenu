@@ -5,7 +5,7 @@ type State = {
 }
 
 const initialState: State = {
-    data: 42
+    data: 69
 }
 
 export const testSlice = createSlice({

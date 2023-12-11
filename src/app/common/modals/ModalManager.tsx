@@ -1,8 +1,9 @@
+import TestModal from '../../../features/lab/TestModal';
 import { useAppSelector } from '../../store/store'
 
 export default function ModalManager() {
     const modalLookup = {
-
+        TestModal,
     }
 
     const { type, data, open } = useAppSelector(state => state.modals);
