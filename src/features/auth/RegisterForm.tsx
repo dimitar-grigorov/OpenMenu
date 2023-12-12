@@ -3,11 +3,15 @@ import ModalWrapper from '../../app/common/modals/ModalWrapper';
 import { FieldValues, useForm } from 'react-hook-form';
 import { useAppDispatch } from '../../app/store/store';
 import { closeModal } from '../../app/common/modals/modalSlice';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../../app/config/firebase';
+import { signIn } from './authSlice';
+import { useFireStore } from '../../app/hooks/firestore/useFirestore';
+import { Timestamp } from 'firebase/firestore';
 import { AppConstants } from '../../app/common/AppConstants';
 
-export default function LoginForm() {
+export default function RegisterForm() {
+    const { set } = useFireStore('profiles');
     const { register, handleSubmit, setError, formState: { isSubmitting, isValid, isDirty, errors } } = useForm({
         mode: 'onTouched'
     })
@@ -15,7 +19,16 @@ export default function LoginForm() {
 
     async function onSubmit(data: FieldValues) {
         try {
-            await signInWithEmailAndPassword(auth, data.email, data.password);
+            const userCreds = await createUserWithEmailAndPassword(auth, data.email, data.password);
+            await updateProfile(userCreds.user, {
+                displayName: data.displayName
+            })
+            await set(userCreds.user.uid, {
+                displayName: data.displayName,
+                email: data.email,
+                createdAt: Timestamp.now()
+            })
+            dispatch(signIn(userCreds.user));
             dispatch(closeModal());
         } catch (error: any) {
             setError('root.serverError', {
@@ -25,8 +38,14 @@ export default function LoginForm() {
     }
 
     return (
-        <ModalWrapper header='Sign into Open Menu' size='mini'>
+        <ModalWrapper header='Register to Open Menu'>
             <Form onSubmit={handleSubmit(onSubmit)}>
+                <Form.Input
+                    defaultValue=''
+                    placeholder='Display name'
+                    {...register('displayName', { required: true })}
+                    error={errors.displayName && 'Display name is required'}
+                />
                 <Form.Input
                     defaultValue=''
                     placeholder='Email address'
@@ -57,7 +76,7 @@ export default function LoginForm() {
                     fluid
                     size='large'
                     color='teal'
-                    content='Login'
+                    content='Register'
                 />
             </Form>
         </ModalWrapper>
