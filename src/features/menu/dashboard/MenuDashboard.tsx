@@ -1,9 +1,9 @@
 import { Grid } from 'semantic-ui-react';
 import MenuItemList from './MenuItemList';
-import { useAppSelector } from '../../app/store/store';
+import { useAppSelector } from '../../../app/store/store';
 import { useEffect, useRef, useState } from 'react';
-import { actions } from '../menuItemSlice';
-import { useFireStore } from '../../app/hooks/firestore/useFirestore';
+import { actions } from '../../menuItemSlice';
+import { useFireStore } from '../../../app/hooks/firestore/useFirestore';
 
 export default function MenuDashboard() {
     const contextRef = useRef(null);

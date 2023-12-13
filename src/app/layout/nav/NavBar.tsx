@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Container, Menu, MenuItem } from 'semantic-ui-react';
+import { Button, Container, Menu, MenuItem } from 'semantic-ui-react';
 import { useAppSelector } from '../../store/store';
 import SignedInMenu from './SignedInMenu';
 import SignedOutButtons from './SignedOutButtons';
@@ -16,6 +16,15 @@ export default function NavBar() {
                 </MenuItem>
                 <MenuItem name='Menu' as={NavLink} to='/menu' />
                 <MenuItem name='Lab' as={NavLink} to='/lab' />
+                <MenuItem>
+                    <Button
+                        as={NavLink}
+                        to='/createMenuItem'
+                        floated='right'
+                        positive={true}
+                        inverted={true}
+                        content='Create Menu Item' />
+                </MenuItem>
 
                 {authenticated ? <SignedInMenu /> : <SignedOutButtons />}
             </Container>

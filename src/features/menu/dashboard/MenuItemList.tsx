@@ -1,4 +1,4 @@
-import { MenuItem } from '../../app/types/menuItem';
+import { MenuItem } from '../../../app/types/menuItem';
 import MenuItemCard from './MenuItemCard';
 
 type Props = {

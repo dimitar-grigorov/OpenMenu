@@ -1,6 +1,6 @@
 import { Card, Image, Icon, Button } from 'semantic-ui-react';
 import './MenuItemCard.css';
-import { MenuItem } from '../../app/types/menuItem';
+import { MenuItem } from '../../../app/types/menuItem';
 
 type Props = {
   menuItem: MenuItem;
