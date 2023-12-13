@@ -1,0 +1,51 @@
+.ui.card {
+    font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    width: 100%;
+    box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+}
+
+.ui.card>.image {
+    height: auto;
+    object-fit: cover;
+}
+
+.ui.card .content {
+    padding: 1em;
+}
+
+.ui.card .card-header {
+    font-size: 1.4em;
+    color: rgba(0, 0, 0, .85);
+    margin-bottom: 5px;
+}
+
+.ui.card .price {
+    display: block;
+    color: #db2828;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.ui.card .meta {
+    color: rgba(0, 0, 0, .4);
+    font-size: 1em;
+}
+
+.ui.card .card-description {
+    clear: both;
+    color: rgba(0, 0, 0, .68);
+    font-size: 1em;
+    margin-top: 5px;
+}
+
+.ui.card .extra.content {
+    padding: 0.5em 1em;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.ui.button.basic.green {
+    background-color: transparent;
+    color: #21ba45;
+}
