@@ -1,13 +1,19 @@
-import React from 'react';
-import { Card } from 'semantic-ui-react';
+import { Card, Button } from 'semantic-ui-react';
 import { Category } from '../../app/types/category';
+import { useAppDispatch } from '../../app/store/store';
+import { openModal } from '../../app/common/modals/modalSlice';
 
-
-type CategoryItemProps = {
+type Props = {
     category: Category;
 };
 
-const CategoryItem: React.FC<CategoryItemProps> = ({ category }) => {
+export default function CategoryItem({ category }: Props) {
+    const dispatch = useAppDispatch();
+
+    const handleEditClick = () => {
+        dispatch(openModal({ type: 'CategoryForm', data: { id: category.id } }));
+    };
+
     return (
         <Card>
             <Card.Content>
@@ -15,9 +21,12 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ category }) => {
                 <Card.Description>
                     <img src={category.imageUrl} alt={category.name} style={{ maxWidth: '100%' }} />
                 </Card.Description>
+                <Button
+                    icon='edit'
+                    content='Edit'
+                    onClick={handleEditClick}
+                />
             </Card.Content>
         </Card>
     );
 };
-
-export default CategoryItem;
