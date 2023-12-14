@@ -1,48 +1,63 @@
-import { useEffect, useRef } from 'react';
-import { Button, Grid, Header, Segment } from 'semantic-ui-react';
-import CategoryItem from './CategoryItem';
-import { openModal } from '../../app/common/modals/modalSlice';
+import React, { useEffect } from 'react';
+import { Button, Segment, Table, Header } from 'semantic-ui-react';
 import { useAppDispatch, useAppSelector } from '../../app/store/store';
+import { openModal } from '../../app/common/modals/modalSlice';
 import { actions } from './categorySlice';
 import { useFireStore } from '../../app/hooks/firestore/useFirestore';
 
 export default function CategoriesList() {
-    const contextRef = useRef(null);
     const { data: categories } = useAppSelector(state => state.categories);
     const { loadCollection } = useFireStore('categories');
     const dispatch = useAppDispatch();
-    console.log(categories);
 
     useEffect(() => {
-        loadCollection(actions)
-    }, [loadCollection])
+        loadCollection(actions);
+    }, [loadCollection]);
+
+    const handleCreateClick = () => {
+        dispatch(openModal({ type: 'CategoryForm', data: { id: '' } }));
+    };
 
     return (
-        <>
-            <Segment>
-                <Button
-                    primary
-                    onClick={() => dispatch(openModal({ type: 'CategoryForm', data: { id: '' } }))}
-                    content='Create New Category'
-                    icon='add'
-                    labelPosition='left'
-                />
-                <Grid columns={3} stackable textAlign='center'>
+        <Segment>
+            <Button
+                primary
+                onClick={handleCreateClick}
+                content='Create New Category'
+                icon='add'
+                labelPosition='left'
+            />
+            <Table celled>
+                <Table.Header>
+                    <Table.Row>
+                        <Table.HeaderCell>Name</Table.HeaderCell>
+                        <Table.HeaderCell>Image</Table.HeaderCell>
+                        <Table.HeaderCell width={2}>Edit</Table.HeaderCell>
+                    </Table.Row>
+                </Table.Header>
+
+                <Table.Body>
                     {categories.length === 0 ? (
-                        <Grid.Column>
-                            <Header icon>
-                                <i className="icon folder open outline" /> No categories yet
-                            </Header>
-                        </Grid.Column>
+                        <Table.Row>
+                            <Table.Cell colSpan='3'>
+                                <Header textAlign='center'>No categories yet</Header>
+                            </Table.Cell>
+                        </Table.Row>
                     ) : (
                         categories.map(category => (
-                            <Grid.Column key={category.id} ref={contextRef}>
-                                <CategoryItem category={category} />
-                            </Grid.Column>
+                            <Table.Row key={category.id}>
+                                <Table.Cell>{category.name}</Table.Cell>
+                                <Table.Cell>
+                                    <img src={category.imageUrl} alt={category.name} style={{ maxWidth: '100px' }} />
+                                </Table.Cell>
+                                <Table.Cell>
+                                    <Button fluid icon='edit' content='Edit' onClick={() => dispatch(openModal({ type: 'CategoryForm', data: { id: category.id } }))} />
+                                </Table.Cell>
+                            </Table.Row>
                         ))
                     )}
-                </Grid>
-            </Segment>
-        </>
+                </Table.Body>
+            </Table>
+        </Segment>
     );
-};
+}

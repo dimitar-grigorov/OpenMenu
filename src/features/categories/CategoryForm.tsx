@@ -56,6 +56,13 @@ export default function CategoryForm() {
                     positive
                     content={id ? 'Update' : 'Create'}
                 />
+                <Button
+                    type='button'
+                    fluid
+                    content='Cancel'
+                    onClick={() => dispatch(closeModal())}
+                    style={{ marginTop: '10px' }}
+                />
             </Form>
         </ModalWrapper>
     );
