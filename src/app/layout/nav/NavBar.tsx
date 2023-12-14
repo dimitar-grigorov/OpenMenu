@@ -15,6 +15,7 @@ export default function NavBar() {
                     Open Menu
                 </MenuItem>
                 <MenuItem name='Menu' as={NavLink} to='/menu' />
+                <MenuItem name='Categories' as={NavLink} to='/categories' />
                 <MenuItem name='Lab' as={NavLink} to='/lab' />
                 <MenuItem>
                     <Button

@@ -4,11 +4,13 @@ import { testSlice } from '../../features/lab/testSlice';
 import { authSlice } from '../../features/auth/authSlice';
 import { modalSlice } from '../common/modals/modalSlice';
 import { menuItemSlice } from '../../features/menuItemSlice';
+import { categorySlice } from '../../features/categories/categorySlice';
 
 export const store = configureStore({
     reducer: {
         test: testSlice.reducer,
         menuItems: menuItemSlice.reducer,
+        categories: categorySlice.reducer,
         modals: modalSlice.reducer,
         auth: authSlice.reducer,
     }
