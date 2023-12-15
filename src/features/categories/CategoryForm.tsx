@@ -69,7 +69,13 @@ export default function CategoryForm() {
                 />
 
                 {imagePreviewUrl && (
-                    <div style={{ margin: '10px 0' }}>
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'center', // Center horizontally
+                        alignItems: 'center', // Center vertically
+                        margin: '10px 0',
+                        height: '200px', // Define a height for vertical centering to take effect
+                    }}>
                         <img src={imagePreviewUrl} alt="Category" style={{ maxWidth: '100%', maxHeight: '200px' }} />
                     </div>
                 )}

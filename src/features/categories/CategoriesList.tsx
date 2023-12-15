@@ -27,40 +27,41 @@ export default function CategoriesList() {
                 icon='add'
                 labelPosition='left'
             />
-            <Table celled>
+            <Table celled structured>
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell width={5}>Name</Table.HeaderCell>
-                        <Table.HeaderCell width={2}>Image</Table.HeaderCell>
-                        <Table.HeaderCell width={2}>Edit</Table.HeaderCell>
+                        <Table.HeaderCell>Image</Table.HeaderCell>
+                        <Table.HeaderCell>Edit</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
 
-
                 <Table.Body>
-                    {categories.length === 0 ? (
-                        <Table.Row>
-                            <Table.Cell colSpan='3'>
-                                <Header textAlign='center'>No categories yet</Header>
+                    {categories.map(category => (
+                        <Table.Row key={category.id}>
+                            <Table.Cell verticalAlign="middle">{category.name}</Table.Cell>
+                            <Table.Cell textAlign="center">
+                                <div style={{ display: 'inline-block', width: '100px', height: '100px', overflow: 'hidden' }}>
+                                    <img
+                                        src={category.imageUrl}
+                                        alt={category.name}
+                                        style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'cover' }}
+                                    />
+                                </div>
+                            </Table.Cell>
+                            <Table.Cell textAlign="center" verticalAlign="middle">
+                                <Button
+                                    fluid
+                                    icon='edit'
+                                    content='Edit'
+                                    onClick={() => dispatch(openModal({ type: 'CategoryForm', data: { id: category.id } }))}
+                                />
                             </Table.Cell>
                         </Table.Row>
-                    ) : (
-                        categories.map(category => (
-                            <Table.Row key={category.id}>
-                                <Table.Cell>{category.name}</Table.Cell>
-                                <Table.Cell>
-                                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                                        <img src={category.imageUrl} alt={category.name} style={{ maxWidth: '100%', maxHeight: '10vh' }} />
-                                    </div>
-                                </Table.Cell>
-                                <Table.Cell>
-                                    <Button fluid icon='edit' content='Edit' onClick={() => dispatch(openModal({ type: 'CategoryForm', data: { id: category.id } }))} />
-                                </Table.Cell>
-                            </Table.Row>
-                        ))
-                    )}
+                    ))}
                 </Table.Body>
             </Table>
+
         </Segment>
     );
 }

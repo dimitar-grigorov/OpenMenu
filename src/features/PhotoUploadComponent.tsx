@@ -16,25 +16,29 @@ interface PhotoUploadComponentProps {
     isFormSubmitting: boolean;
 }
 
-const PhotoUploadComponent: React.FC<PhotoUploadComponentProps> = ({ initialImagePath, onUploadStatusChange, onUploadComplete, isFormSubmitting }) => {
+const PhotoUploadComponent: React.FC<PhotoUploadComponentProps> = ({
+    initialImagePath,
+    onUploadStatusChange,
+    onUploadComplete,
+    isFormSubmitting,
+}) => {
     const [files, setFiles] = useState<any[]>([]);
     const [uploadedImageId, setUploadedImageId] = useState<string>('');
-
-    useEffect(() => {
-        // Cleanup function to delete the uploaded image
-        return () => {
-            if (!isFormSubmitting && uploadedImageId && initialImagePath) {
-                const storageRef = ref(storage, `category_images/${uploadedImageId}`);
-                deleteObject(storageRef).catch(console.error);
-            }
-        };
-    }, [isFormSubmitting, uploadedImageId, initialImagePath]);
 
     useEffect(() => {
         if (initialImagePath) {
             setFiles([{ source: initialImagePath, options: { type: 'local' } }]);
         }
     }, [initialImagePath]);
+
+    useEffect(() => {
+        return () => {
+            if (!isFormSubmitting && uploadedImageId && !initialImagePath) {
+                const storageRef = ref(storage, `category_images/${uploadedImageId}`);
+                deleteObject(storageRef).catch(console.error);
+            }
+        };
+    }, [isFormSubmitting, uploadedImageId, initialImagePath]);
 
     return (
         <FilePond
