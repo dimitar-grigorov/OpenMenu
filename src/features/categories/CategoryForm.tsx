@@ -7,9 +7,7 @@ import { Category } from '../../app/types/category';
 import { useAppDispatch, useAppSelector } from '../../app/store/store';
 import { closeModal } from '../../app/common/modals/modalSlice';
 import PhotoUploadComponent from '../PhotoUploadComponent';
-import { useEffect, useState } from 'react';
-import { deleteObject, ref } from 'firebase/storage';
-import { storage } from '../../app/config/firebase';
+import { useState } from 'react';
 
 export default function CategoryForm() {
     const { create, update } = useFireStore('categories');
@@ -17,7 +15,6 @@ export default function CategoryForm() {
         mode: 'onTouched'
     });
     const dispatch = useAppDispatch();
-
     const id = useAppSelector(state => state.modals.data?.id);
     const category = useAppSelector(state => state.categories.data.find(x => x.id === id));
 
@@ -41,32 +38,17 @@ export default function CategoryForm() {
         }
     }
 
-    const [uploadedImageId, setUploadedImageId] = useState<string>('');
     const [uploadUrl, setUploadUrl] = useState<string>('');
-    const [isUploading, setIsUploading] = useState<boolean>(false);
-    const handleUploadComplete = (url: string, id: string) => {
+    const [isUploading, setIsUploading] = useState<boolean>(false)
+    const [imagePreviewUrl, setImagePreviewUrl] = useState<string>(category?.imageUrl || '');
+
+    const handleUploadComplete = (url: string) => {
         setUploadUrl(url);
-        setUploadedImageId(id);
+        setImagePreviewUrl(url); // Update the image preview URL
     };
 
     const handleUploadStatusChange = (status: boolean) => {
         setIsUploading(status);
-        console.log('isUploading', status);
-    };
-
-    const [originalImageUrl, setOriginalImageUrl] = useState<string>(category?.imageUrl || '');
-
-    useEffect(() => {
-        setOriginalImageUrl(category?.imageUrl || '');
-    }, [category]);
-
-    const handleCancel = async () => {
-        if (uploadUrl && uploadedImageId) {
-            // Delete the new uploaded image
-            const storageRef = ref(storage, `category_images/${uploadedImageId}`);
-            await deleteObject(storageRef);
-        }
-        dispatch(closeModal());
     };
 
     return (
@@ -81,8 +63,22 @@ export default function CategoryForm() {
                 <Form.Input
                     placeholder='Image URL'
                     defaultValue={category?.imageUrl || ''}
+                    readOnly
                     {...register('imageUrl', { required: 'Image URL is required' })}
                     error={errors.imageUrl && errors.imageUrl.message}
+                />
+
+                {imagePreviewUrl && (
+                    <div style={{ margin: '10px 0' }}>
+                        <img src={imagePreviewUrl} alt="Category" style={{ maxWidth: '100%', maxHeight: '200px' }} />
+                    </div>
+                )}
+
+                <PhotoUploadComponent
+                    initialImagePath={category?.imageUrl}
+                    onUploadStatusChange={handleUploadStatusChange}
+                    onUploadComplete={handleUploadComplete}
+                    isFormSubmitting={isSubmitting}
                 />
 
                 <Button
@@ -97,16 +93,10 @@ export default function CategoryForm() {
                     type='button'
                     fluid
                     content='Cancel'
-                    onClick={handleCancel}
+                    onClick={() => dispatch(closeModal())}
                     style={{ marginTop: '10px' }}
                 />
             </Form>
-
-            <PhotoUploadComponent
-                initialImagePath={category?.imageUrl}
-                onUploadStatusChange={handleUploadStatusChange}
-                onUploadComplete={handleUploadComplete}
-            />
         </ModalWrapper>
     );
 }

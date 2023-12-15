@@ -12,12 +12,23 @@ registerPlugin(FilePondPluginImagePreview);
 interface PhotoUploadComponentProps {
     initialImagePath?: string;
     onUploadStatusChange: (status: boolean) => void;
-    onUploadComplete: (url: string, id: string) => void;
+    onUploadComplete: (url: string) => void;
+    isFormSubmitting: boolean;
 }
 
-const PhotoUploadComponent: React.FC<PhotoUploadComponentProps> = ({ initialImagePath, onUploadStatusChange, onUploadComplete }) => {
-    const [files, setFiles] = useState<any[]>([]); // Using any for FilePond file type
-    const [isUploading, setIsUploading] = useState(false);
+const PhotoUploadComponent: React.FC<PhotoUploadComponentProps> = ({ initialImagePath, onUploadStatusChange, onUploadComplete, isFormSubmitting }) => {
+    const [files, setFiles] = useState<any[]>([]);
+    const [uploadedImageId, setUploadedImageId] = useState<string>('');
+
+    useEffect(() => {
+        // Cleanup function to delete the uploaded image
+        return () => {
+            if (!isFormSubmitting && uploadedImageId && initialImagePath) {
+                const storageRef = ref(storage, `category_images/${uploadedImageId}`);
+                deleteObject(storageRef).catch(console.error);
+            }
+        };
+    }, [isFormSubmitting, uploadedImageId, initialImagePath]);
 
     useEffect(() => {
         if (initialImagePath) {
@@ -33,12 +44,12 @@ const PhotoUploadComponent: React.FC<PhotoUploadComponentProps> = ({ initialImag
             maxFiles={1}
             server={{
                 process: (_fieldName, file, _metadata, load, error, progress) => {
-                    setIsUploading(true);
                     onUploadStatusChange(true);
 
                     const uniqueId = createId();
+                    setUploadedImageId(uniqueId); // Set the uploaded image ID
                     const storageRef = ref(storage, `category_images/${uniqueId}`);
-                    const uploadTask = uploadBytesResumable(storageRef, file);
+                    const uploadTask = uploadBytesResumable(storageRef, file)
 
                     uploadTask.on(
                         'state_changed',
@@ -47,14 +58,12 @@ const PhotoUploadComponent: React.FC<PhotoUploadComponentProps> = ({ initialImag
                         },
                         err => {
                             error(err.message);
-                            setIsUploading(false);
                             onUploadStatusChange(false);
                         },
                         async () => {
                             const url = await getDownloadURL(uploadTask.snapshot.ref);
-                            setIsUploading(false);
                             onUploadStatusChange(false);
-                            onUploadComplete(url, uniqueId);
+                            onUploadComplete(url);
                             load(url);
                         }
                     );

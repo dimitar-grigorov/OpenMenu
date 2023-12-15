@@ -30,11 +30,12 @@ export default function CategoriesList() {
             <Table celled>
                 <Table.Header>
                     <Table.Row>
-                        <Table.HeaderCell>Name</Table.HeaderCell>
-                        <Table.HeaderCell>Image</Table.HeaderCell>
+                        <Table.HeaderCell width={5}>Name</Table.HeaderCell>
+                        <Table.HeaderCell width={2}>Image</Table.HeaderCell>
                         <Table.HeaderCell width={2}>Edit</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
+
 
                 <Table.Body>
                     {categories.length === 0 ? (
@@ -48,7 +49,9 @@ export default function CategoriesList() {
                             <Table.Row key={category.id}>
                                 <Table.Cell>{category.name}</Table.Cell>
                                 <Table.Cell>
-                                    <img src={category.imageUrl} alt={category.name} style={{ maxWidth: '100px' }} />
+                                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                                        <img src={category.imageUrl} alt={category.name} style={{ maxWidth: '100%', maxHeight: '10vh' }} />
+                                    </div>
                                 </Table.Cell>
                                 <Table.Cell>
                                     <Button fluid icon='edit' content='Edit' onClick={() => dispatch(openModal({ type: 'CategoryForm', data: { id: category.id } }))} />
