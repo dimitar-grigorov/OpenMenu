@@ -27,6 +27,7 @@ export const authSlice = createSlice({
                     email: user.email,
                     photoURL: user.photoURL,
                     displayName: user.displayName,
+                    providerId: user.providerData[0].providerId
                 }
                 return { payload: mapped }
             }

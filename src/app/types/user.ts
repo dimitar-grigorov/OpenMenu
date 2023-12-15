@@ -3,4 +3,5 @@ export type AppUser = {
     photoURL: string | null
     uid?: string
     displayName: string | null
+    providerId: string | null
 }
