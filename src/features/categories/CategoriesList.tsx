@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
-import { Button, Segment, Table, Header } from 'semantic-ui-react';
+import { Button, Segment, Table } from 'semantic-ui-react';
 import { useAppDispatch, useAppSelector } from '../../app/store/store';
 import { openModal } from '../../app/common/modals/modalSlice';
 import { actions } from './categorySlice';
 import { useFireStore } from '../../app/hooks/firestore/useFirestore';
+import { useEffect } from 'react';
 
 export default function CategoriesList() {
     const { data: categories } = useAppSelector(state => state.categories);

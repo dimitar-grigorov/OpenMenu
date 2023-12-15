@@ -85,6 +85,7 @@ export default function CategoryForm() {
                     onUploadStatusChange={handleUploadStatusChange}
                     onUploadComplete={handleUploadComplete}
                     isFormSubmitting={isSubmitting}
+                    storagePath="category_images"
                 />
 
                 <Button

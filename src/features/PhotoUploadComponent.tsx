@@ -14,6 +14,8 @@ interface PhotoUploadComponentProps {
     onUploadStatusChange: (status: boolean) => void;
     onUploadComplete: (url: string) => void;
     isFormSubmitting: boolean;
+    storagePath: string;
+    fileType?: string;
 }
 
 const PhotoUploadComponent: React.FC<PhotoUploadComponentProps> = ({
@@ -21,6 +23,8 @@ const PhotoUploadComponent: React.FC<PhotoUploadComponentProps> = ({
     onUploadStatusChange,
     onUploadComplete,
     isFormSubmitting,
+    storagePath,
+    fileType = 'image/*',
 }) => {
     const [files, setFiles] = useState<any[]>([]);
     const [uploadedImageId, setUploadedImageId] = useState<string>('');
@@ -34,7 +38,7 @@ const PhotoUploadComponent: React.FC<PhotoUploadComponentProps> = ({
     useEffect(() => {
         return () => {
             if (!isFormSubmitting && uploadedImageId && !initialImagePath) {
-                const storageRef = ref(storage, `category_images/${uploadedImageId}`);
+                const storageRef = ref(storage, `${storagePath}/${uploadedImageId}`);
                 deleteObject(storageRef).catch(console.error);
             }
         };
@@ -46,13 +50,14 @@ const PhotoUploadComponent: React.FC<PhotoUploadComponentProps> = ({
             onupdatefiles={setFiles}
             allowMultiple={false}
             maxFiles={1}
+            acceptedFileTypes={[fileType]}
             server={{
                 process: (_fieldName, file, _metadata, load, error, progress) => {
                     onUploadStatusChange(true);
 
                     const uniqueId = createId();
                     setUploadedImageId(uniqueId); // Set the uploaded image ID
-                    const storageRef = ref(storage, `category_images/${uniqueId}`);
+                    const storageRef = ref(storage, `${storagePath}/${uniqueId}`);
                     const uploadTask = uploadBytesResumable(storageRef, file)
 
                     uploadTask.on(
@@ -75,6 +80,7 @@ const PhotoUploadComponent: React.FC<PhotoUploadComponentProps> = ({
             }}
             name="files"
             labelIdle='Drag & Drop your image or <span class="filepond--label-action">Browse</span>'
+
         />
     );
 };
