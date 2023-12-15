@@ -1,4 +1,4 @@
-import { Button, Form, Label } from 'semantic-ui-react';
+import { Button, Divider, Form, Label } from 'semantic-ui-react';
 import ModalWrapper from '../../app/common/modals/ModalWrapper';
 import { FieldValues, useForm } from 'react-hook-form';
 import { useAppDispatch } from '../../app/store/store';
@@ -6,6 +6,7 @@ import { closeModal } from '../../app/common/modals/modalSlice';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../app/config/firebase';
 import { AppConstants } from '../../app/common/AppConstants';
+import SocialLogin from './SocialLogin';
 
 export default function LoginForm() {
     const { register, handleSubmit, setError, formState: { isSubmitting, isValid, isDirty, errors } } = useForm({
@@ -59,6 +60,8 @@ export default function LoginForm() {
                     color='teal'
                     content='Login'
                 />
+                <Divider horizontal>Or</Divider>
+                <SocialLogin />
             </Form>
         </ModalWrapper>
     )
