@@ -1,5 +1,6 @@
 import LoginForm from '../../../features/auth/LoginForm';
 import RegisterForm from '../../../features/auth/RegisterForm';
+import CategoryDeleteForm from '../../../features/categories/CategoryDeleteForm';
 import CategoryForm from '../../../features/categories/CategoryForm';
 import TestModal from '../../../features/lab/TestModal';
 import { useAppSelector } from '../../store/store'
@@ -8,6 +9,7 @@ export default function ModalManager() {
     const modalLookup = {
         TestModal,
         CategoryForm,
+        CategoryDeleteForm,
         LoginForm,
         RegisterForm
     }
@@ -20,7 +22,6 @@ export default function ModalManager() {
         const ModalComponent = (modalLookup as any)[type];
         renderedModal = <ModalComponent data={data} />
     }
-
 
     return (
         <span>{renderedModal}</span>

@@ -32,7 +32,7 @@ export default function CategoriesList() {
                     <Table.Row>
                         <Table.HeaderCell width={5}>Name</Table.HeaderCell>
                         <Table.HeaderCell>Image</Table.HeaderCell>
-                        <Table.HeaderCell>Edit</Table.HeaderCell>
+                        <Table.HeaderCell width={3}>Actions</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
 
@@ -51,10 +51,18 @@ export default function CategoriesList() {
                             </Table.Cell>
                             <Table.Cell textAlign="center" verticalAlign="middle">
                                 <Button
-                                    fluid
                                     icon='edit'
                                     content='Edit'
-                                    onClick={() => dispatch(openModal({ type: 'CategoryForm', data: { id: category.id } }))}
+                                    onClick={() => dispatch(openModal(
+                                        { type: 'CategoryForm', data: { id: category.id } }))}
+                                />
+                                <Button
+                                    color='red'
+                                    icon='trash'
+                                    content='Delete'
+                                    style={{ marginLeft: '10px' }}
+                                    onClick={() => dispatch(openModal(
+                                        { type: 'CategoryDeleteForm', data: { id: category.id } }))}
                                 />
                             </Table.Cell>
                         </Table.Row>

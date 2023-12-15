@@ -33,7 +33,7 @@ export default function AccountPage() {
     };
 
     return (
-        <Segment>
+        <Segment compact style={{ margin: '0 auto', textAlign: 'center' }}>
             <Header dividing size='large' content='Account' />
             {currentUser?.providerId === 'password' &&
                 <div>
