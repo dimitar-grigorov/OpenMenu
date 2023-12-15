@@ -1,31 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { FilePond, registerPlugin } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
 import { storage } from '../app/config/firebase';
 import { createId } from '@paralleldrive/cuid2';
 
-registerPlugin(FilePondPluginImagePreview);
+registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateType);
 
-interface PhotoUploadComponentProps {
+type PhotoUploadComponentProps = {
     initialImagePath?: string;
     onUploadStatusChange: (status: boolean) => void;
     onUploadComplete: (url: string) => void;
     isFormSubmitting: boolean;
     storagePath: string;
-    fileType?: string;
 }
 
-const PhotoUploadComponent: React.FC<PhotoUploadComponentProps> = ({
-    initialImagePath,
-    onUploadStatusChange,
-    onUploadComplete,
-    isFormSubmitting,
-    storagePath,
-    fileType = 'image/*',
-}) => {
+export default function PhotoUploadComponent({ initialImagePath, onUploadStatusChange,
+    onUploadComplete, isFormSubmitting, storagePath
+}: PhotoUploadComponentProps) {
     const [files, setFiles] = useState<any[]>([]);
     const [uploadedImageId, setUploadedImageId] = useState<string>('');
 
@@ -50,7 +45,7 @@ const PhotoUploadComponent: React.FC<PhotoUploadComponentProps> = ({
             onupdatefiles={setFiles}
             allowMultiple={false}
             maxFiles={1}
-            acceptedFileTypes={[fileType]}
+            acceptedFileTypes={['image/*']}
             server={{
                 process: (_fieldName, file, _metadata, load, error, progress) => {
                     onUploadStatusChange(true);
@@ -84,5 +79,3 @@ const PhotoUploadComponent: React.FC<PhotoUploadComponentProps> = ({
         />
     );
 };
-
-export default PhotoUploadComponent;

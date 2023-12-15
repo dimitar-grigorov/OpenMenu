@@ -11,7 +11,7 @@ import { useState } from 'react';
 
 export default function CategoryForm() {
     const { create, update } = useFireStore('categories');
-    const { register, handleSubmit, formState: { errors, isValid, isSubmitting } } = useForm<Category>({
+    const { register, handleSubmit, setValue, formState: { errors, isValid, isSubmitting } } = useForm<Category>({
         mode: 'onTouched'
     });
     const dispatch = useAppDispatch();
@@ -20,11 +20,6 @@ export default function CategoryForm() {
 
     async function onSubmit(data: Category) {
         try {
-
-            if (uploadUrl) {
-                data.imageUrl = uploadUrl;
-            }
-
             if (id) {
                 await update(id, data);
                 toast.success('Category updated successfully');
@@ -38,17 +33,12 @@ export default function CategoryForm() {
         }
     }
 
-    const [uploadUrl, setUploadUrl] = useState<string>('');
-    const [isUploading, setIsUploading] = useState<boolean>(false)
-    const [imagePreviewUrl, setImagePreviewUrl] = useState<string>(category?.imageUrl || '');
+    const [isUploading, setIsUploading] = useState(false)
+    const [imagePreviewUrl, setImagePreviewUrl] = useState(category?.imageUrl || '');
 
     const handleUploadComplete = (url: string) => {
-        setUploadUrl(url);
-        setImagePreviewUrl(url); // Update the image preview URL
-    };
-
-    const handleUploadStatusChange = (status: boolean) => {
-        setIsUploading(status);
+        setValue('imageUrl', url, { shouldValidate: true });
+        setImagePreviewUrl(url);
     };
 
     return (
@@ -63,26 +53,19 @@ export default function CategoryForm() {
                 <Form.Input
                     placeholder='Image URL'
                     defaultValue={category?.imageUrl || ''}
-                    readOnly
                     {...register('imageUrl', { required: 'Image URL is required' })}
                     error={errors.imageUrl && errors.imageUrl.message}
                 />
-
                 {imagePreviewUrl && (
                     <div style={{
-                        display: 'flex',
-                        justifyContent: 'center', // Center horizontally
-                        alignItems: 'center', // Center vertically
-                        margin: '10px 0',
-                        height: '200px', // Define a height for vertical centering to take effect
+                        display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '10px 0', height: '200px',
                     }}>
                         <img src={imagePreviewUrl} alt="Category" style={{ maxWidth: '100%', maxHeight: '200px' }} />
                     </div>
                 )}
-
                 <PhotoUploadComponent
                     initialImagePath={category?.imageUrl}
-                    onUploadStatusChange={handleUploadStatusChange}
+                    onUploadStatusChange={setIsUploading}
                     onUploadComplete={handleUploadComplete}
                     isFormSubmitting={isSubmitting}
                     storagePath="category_images"
