@@ -5,6 +5,7 @@ import MenuDashboard from '../../features/menu/dashboard/MenuDashboard';
 import MenuItemForm from '../../features/menu/forms/MenuItemForm';
 import CategoriesList from '../../features/categories/CategoriesList';
 import AccountPage from '../../features/auth/AccountPage';
+import MainMenu from '../../features/menu/dashboard/MainMenu';
 
 export const router = createBrowserRouter([
     {
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
             { path: '/categories', element: <CategoriesList /> },
             { path: '/account', element: <AccountPage /> },
             { path: '/lab', element: <Lab /> },
+            { path: '/main-menu', element: <MainMenu /> }
         ]
     }
 ]);

@@ -1,0 +1,18 @@
+#food-item-grid {
+    margin-top: 3rem;
+    margin-bottom: 4.375rem;
+}
+
+#main-menu-icons {
+    margin-top: 4rem;
+}
+
+.main-menu-icon-size {
+    max-width: 4.375rem;
+    margin-bottom: 5px;
+}
+
+.selectedBox {
+    border: 1px solid black;
+    border-radius: 6px;
+}

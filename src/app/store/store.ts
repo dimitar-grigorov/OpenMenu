@@ -5,11 +5,13 @@ import { authSlice } from '../../features/auth/authSlice';
 import { modalSlice } from '../common/modals/modalSlice';
 import { menuItemSlice } from '../../features/menuItemSlice';
 import { categorySlice } from '../../features/categories/categorySlice';
+import { foodItemSlice } from '../../features/foodItemSlice';
 
 export const store = configureStore({
     reducer: {
         test: testSlice.reducer,
         menuItems: menuItemSlice.reducer,
+        foodItems: foodItemSlice.reducer,
         categories: categorySlice.reducer,
         modals: modalSlice.reducer,
         auth: authSlice.reducer,
