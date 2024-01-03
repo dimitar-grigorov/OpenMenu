@@ -18,7 +18,6 @@ Welcome to OpenMenu, your go-to React-based web application for a delightful onl
 ## Technologies Used
 
 - React
-- [Add other technologies/frameworks used]
 
 ## Contributing
 
