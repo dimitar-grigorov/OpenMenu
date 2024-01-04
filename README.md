@@ -1,5 +1,7 @@
 # OpenMenu
 
+## To be deprecated!
+
 Welcome to OpenMenu, your go-to React-based web application for a delightful online dining experience!
 
 ## Features
